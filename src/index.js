@@ -8,6 +8,7 @@ const app = express()
 
 const signupRouter = require("./resources/auth/router")
 const tradesRouter = require("./resources/trades/router")
+const userRouter = require("./resources/users/router")
 const {protect} = require('./utils/authentication')
 
 /* SETUP MIDDLEWARE */
@@ -23,6 +24,7 @@ app.use(morgan("dev"))
 
 app.use("/auth", signupRouter)
 app.use("/trades", protect, tradesRouter)
+app.use("/users", protect, userRouter)
 
 app.get("*", (req, res) => {
   res.json({ ok: true })

@@ -1,11 +1,14 @@
 const express = require("express");
+const { protect } = require("../../utils/authentication");
 
 const router = express.Router();
 
-const { buyAssets, getAssets } = require("./controller");
+const { tradeAssets, getAssets, aggregateTrades } = require("./controller");
 
-router.get("/all", getAssets);
+router.get("/all", protect, getAssets);
 
-router.post("/buy", buyAssets);
+router.get("/aggregate", protect, aggregateTrades);
+
+router.post("/buy", tradeAssets);
 
 module.exports = router;
