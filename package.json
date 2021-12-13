@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ValentinNM/boolean-uk-final-solo-project-server#readme",
   "dependencies": {
     "@prisma/client": "^3.5.0",
+    "prisma": "^3.5.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -27,7 +28,6 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "prisma": "^3.5.0"
+    "nodemon": "^2.0.15"
   }
 }
