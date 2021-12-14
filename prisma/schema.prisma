@@ -9,12 +9,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String   @db.VarChar(255)
-  profile   Profile?
-  role      Role     @default(USER)
-  trades    Trade[]
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String   @db.VarChar(255)
+  profile  Profile?
+  role     Role     @default(USER)
+  trades   Trade[]
+  account  Account?
 }
 
 model Profile {
@@ -30,6 +31,13 @@ model Profile {
   subscribed  Boolean  @default(false)
   user        User     @relation(fields: [userId], references: [id])
   userId      String   @unique
+}
+
+model Account {
+  id      String @id @default(uuid())
+  balance Float  @default(100000)
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @unique
 }
 
 model Trade {
