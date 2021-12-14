@@ -25,7 +25,7 @@ function aggregate(trades) {
   const result = {};
 
   for (let i = 0; i < trades.length; i++) {
-    const trade = trades[i];
+    const trade = trades[i]
 
     const { assetSymbol, quantity, type, price } = trade;
 
@@ -42,21 +42,35 @@ function aggregate(trades) {
     const {price : prevPrice} = result[assetSymbol]
 
     if(type === "SELL") { // if found one type of SELL
+
+      const updatedQuantity = prevQuantity - quantity; 
+      let avgPrice = (prevPrice * prevQuantity - price * quantity) / (prevQuantity - quantity)
+      if( updatedQuantity == 0) { // if the quant == 0 && price == Infinity/NaN also, crashes the app on the front end also interfering with the price.toFixed()
+        delete result[assetSymbol] // reseting the object by deleting it once the condition==ture 
+        
+        continue;
+      }
+
       result[assetSymbol] ={ 
         assetSymbol,
-        quantity : prevQuantity - quantity, // subtract quant and price
-        price: (prevPrice * prevQuantity - price * quantity) / (prevQuantity - quantity)
+        quantity : updatedQuantity, // subtract quant and price
+        price: avgPrice
       }
       continue;
     }
 
     if (type === "BUY") {
+
+      const updatedQuantity = prevQuantity + quantity;
+      const avgPrice = (prevPrice * prevQuantity + price * quantity) / (prevQuantity + quantity)
+
       result[assetSymbol] ={
         assetSymbol,
-        quantity: prevQuantity + quantity, // add quant and price
-        price: (prevPrice * prevQuantity + price * quantity) / (prevQuantity + quantity)
+        quantity: updatedQuantity, // add quant and price
+        price: avgPrice
       } 
     }
+
   }
 
   const filteredTrades = Object.values(result);
@@ -75,7 +89,6 @@ async function aggregateTrades(req, res) {
 
     const data = aggregate(assets); 
 
-    // TODO - fix inffinity issue with aggregate price
     const portofolio = data.filter(asset => asset.quantity > 0)
 
     res.status(200).json({ portofolio });
