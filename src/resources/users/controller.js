@@ -1,8 +1,6 @@
 const prisma = require("../../utils/dbClient");
 
 async function getProfile(req, res) {
-    
-  console.log({ id : req.user.id });
 
   try {
     const profile = await prisma.profile.findUnique({
@@ -13,14 +11,13 @@ async function getProfile(req, res) {
 
     res.status(200).json({ profile });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     res.status(500).json({ error: error.message });
   }
 }
 
 async function validateProfile(req, res) {
-  const id = req.user.id;
 
   let body = req.body;
   
@@ -29,8 +26,6 @@ async function validateProfile(req, res) {
   dob = new Date(dob).toISOString();
 
   body.dob = dob;
-
-  console.log({ id, dob, body});
 
   try {
     const profile = await prisma.user.update({
@@ -54,7 +49,6 @@ async function validateProfile(req, res) {
       }
     })
 
-    console.log({ profile });
     res.status(200).json({ profile });
   } catch (error) {
     console.error(error);
@@ -64,8 +58,6 @@ async function validateProfile(req, res) {
 }
 
 async function editProfile(req, res) { 
-
-  console.log({ id: req.user.id, body: req.body })
 
   try {
 
@@ -78,8 +70,6 @@ async function editProfile(req, res) {
       }
     })
 
-    console.log({updatedProfile})
-
     res.status(200).json({updatedProfile})
 
   } catch (error) {
@@ -87,8 +77,6 @@ async function editProfile(req, res) {
 
     res.status(500).json({error : error.message})
   }
-
 }
-
 
 module.exports = { getProfile, validateProfile, editProfile };
