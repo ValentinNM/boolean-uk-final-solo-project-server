@@ -8,9 +8,10 @@ async function getAssets(req, res) {
       },
     });
 
-    const userAssets = assets.filter(
-      (asset) => asset.type === "BUY" && asset.quantity > 0
-    );
+    const userAssets = assets;
+    // const userAssets = assets.filter(
+    //   (asset) => asset.type === "BUY" && asset.quantity > 0
+    // );
 
     res.status(200).json({ userAssets });
   } catch (error) {

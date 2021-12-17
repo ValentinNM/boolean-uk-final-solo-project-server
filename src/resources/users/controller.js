@@ -26,6 +26,7 @@ async function validateProfile(req, res) {
   dob = new Date(dob).toISOString();
 
   body.dob = dob;
+  
 
   try {
     const profile = await prisma.user.update({
